@@ -124,7 +124,7 @@ class DynamoDB implements
     public function setClientDetails($client_id, $client_secret = null, $redirect_uri = null, $grant_types = null, $scope = null, $user_id = null)
     {
         $clientData = compact('client_id', 'client_secret', 'redirect_uri', 'grant_types', 'scope', 'user_id');
-        $clientData = array_filter($clientData, 'self::isNotEmpty');
+        $clientData = array_filter($clientData, array(__CLASS__, 'isNotEmpty'));
 
         $result = $this->client->putItem(array(
             'TableName' =>  $this->config['client_table'],
@@ -171,7 +171,7 @@ class DynamoDB implements
         $expires = date('Y-m-d H:i:s', $expires);
 
         $clientData = compact('access_token', 'client_id', 'user_id', 'expires', 'scope');
-        $clientData = array_filter($clientData, 'self::isNotEmpty');
+        $clientData = array_filter($clientData, array(__CLASS__, 'isNotEmpty'));
 
         $result = $this->client->putItem(array(
             'TableName' =>  $this->config['access_token_table'],
@@ -219,7 +219,7 @@ class DynamoDB implements
         $expires = date('Y-m-d H:i:s', $expires);
 
         $clientData = compact('authorization_code', 'client_id', 'user_id', 'redirect_uri', 'expires', 'scope', 'id_token', 'code_challenge', 'code_challenge_method');
-        $clientData = array_filter($clientData, 'self::isNotEmpty');
+        $clientData = array_filter($clientData, array(__CLASS__, 'isNotEmpty'));
 
         $result = $this->client->putItem(array(
             'TableName' =>  $this->config['code_table'],
@@ -320,7 +320,7 @@ class DynamoDB implements
         $expires = date('Y-m-d H:i:s', $expires);
 
         $clientData = compact('refresh_token', 'client_id', 'user_id', 'expires', 'scope');
-        $clientData = array_filter($clientData, 'self::isNotEmpty');
+        $clientData = array_filter($clientData, array(__CLASS__, 'isNotEmpty'));
 
         $result = $this->client->putItem(array(
             'TableName' =>  $this->config['refresh_token_table'],
@@ -373,7 +373,7 @@ class DynamoDB implements
         $password = $this->hashPassword($password);
 
         $clientData = compact('username', 'password', 'first_name', 'last_name');
-        $clientData = array_filter($clientData, 'self::isNotEmpty');
+        $clientData = array_filter($clientData, array(__CLASS__, 'isNotEmpty'));
 
         $result = $this->client->putItem(array(
             'TableName' =>  $this->config['user_table'],
